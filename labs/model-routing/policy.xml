@@ -3,41 +3,37 @@
         <base />
 
         <!-- Store the original request body for possible retries -->
-        <set-variable name="originalRequestBody" value="@(context.Request.Body.As&lt;string&gt;(preserveContent: true))" />
-        
+        <set-variable name="originalRequestBody" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         <!-- Define PAYG fallback backends for each model -->
-        <set-variable name="payg-backend-gpt35" value="{backend-id-2}" />
-        <set-variable name="payg-backend-gpt4o" value="{backend-id-3}" />
-        
+        <set-variable name="payg-backend-gpt35" value="oai-backend-pool-gpt-35-turbo-0125" />
+        <set-variable name="payg-backend-gpt4o" value="oai-backend-pool-gpt-4o-2024-05-13" />
         <!-- Use a <choose> block to evaluate deployment-id -->
         <choose>
-            <when condition="@(context.Request.MatchedParameters[&quot;deployment-id&quot;] == &quot;gpt-35-turbo-1106&quot;)">
-                <set-variable name="primary-backend" value="{backend-id-1}" />
-                <set-variable name="fallback-backend" value="{backend-id-2}" />
-                <set-variable name="payg-backend" value="@((string)context.Variables[&quot;payg-backend-gpt35&quot;])" />
+            <when condition="@(context.Request.MatchedParameters["deployment-id"] == "gpt-35-turbo-1106")">
+                <set-variable name="primary-backend" value="oai-backend-pool-gpt-35-turbo-1106" />
+                <set-variable name="fallback-backend" value="oai-backend-pool-gpt-35-turbo-0125" />
+                <set-variable name="payg-backend" value="@((string)context.Variables["payg-backend-gpt35"])" />
             </when>
-            <when condition="@(context.Request.MatchedParameters[&quot;deployment-id&quot;] == &quot;gpt-35-turbo-0125&quot;)">
-                <set-variable name="primary-backend" value="{backend-id-2}" />
-                <set-variable name="fallback-backend" value="{backend-id-1}" />
-                <set-variable name="payg-backend" value="@((string)context.Variables[&quot;payg-backend-gpt35&quot;])" />
+            <when condition="@(context.Request.MatchedParameters["deployment-id"] == "gpt-35-turbo-0125")">
+                <set-variable name="primary-backend" value="oai-backend-pool-gpt-35-turbo-0125" />
+                <set-variable name="fallback-backend" value="oai-backend-pool-gpt-35-turbo-1106" />
+                <set-variable name="payg-backend" value="@((string)context.Variables["payg-backend-gpt35"])" />
             </when>
-            <when condition="@(context.Request.MatchedParameters[&quot;deployment-id&quot;] == &quot;gpt-4o-2024-05-13&quot;)">
-                <set-variable name="primary-backend" value="{backend-id-3}" />
-                <set-variable name="fallback-backend" value="{backend-id-1}" />
-                <set-variable name="payg-backend" value="@((string)context.Variables[&quot;payg-backend-gpt4o&quot;])" />
+            <when condition="@(context.Request.MatchedParameters["deployment-id"] == "gpt-4o-2024-05-13")">
+                <set-variable name="primary-backend" value="oai-backend-pool-gpt-4o-2024-05-13" />
+                <set-variable name="fallback-backend" value="oai-backend-pool-gpt-35-turbo-1106" />
+                <set-variable name="payg-backend" value="@((string)context.Variables["payg-backend-gpt4o"])" />
             </when>
             <otherwise>
-                <set-variable name="primary-backend" value="{backend-id-1}" />
-                <set-variable name="fallback-backend" value="{backend-id-2}" />
-                <set-variable name="payg-backend" value="@((string)context.Variables[&quot;payg-backend-gpt35&quot;])" />
+                <set-variable name="primary-backend" value="oai-backend-pool-gpt-35-turbo-1106" />
+                <set-variable name="fallback-backend" value="oai-backend-pool-gpt-35-turbo-0125" />
+                <set-variable name="payg-backend" value="@((string)context.Variables["payg-backend-gpt35"])" />
             </otherwise>
         </choose>
-        
         <!-- Set the primary backend service -->
-        <set-backend-service backend-id="@((string)context.Variables[&quot;primary-backend&quot;])" />
-
+        <!-- Set the primary backend service -->
+        <set-backend-service backend-id="@((string)context.Variables["primary-backend"])" />
         <authentication-managed-identity resource="https://cognitiveservices.azure.com" output-token-variable-name="managed-id-access-token" ignore-error="false" />
-
         <set-header name="Authorization" exists-action="override">
             <value>@("Bearer " + (string)context.Variables["managed-id-access-token"])</value>
         </set-header>
