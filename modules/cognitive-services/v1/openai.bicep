@@ -51,7 +51,7 @@ var cognitiveServicesOpenAIUserRoleDefinitionID = resourceId('Microsoft.Authoriz
 //    RESOURCES
 // ------------------
 
-resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2024-10-01' = [for config in openAIConfig: if(length(openAIConfig) > 0) {
+resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = [for config in openAIConfig: if(length(openAIConfig) > 0) {
   name: '${config.name}-${resourceSuffix}'
   location: config.location
   sku: {
@@ -83,7 +83,7 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
 }]
 
 @batchSize(1)
-resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = [for (config, i) in openAIConfig: if(length(openAIConfig) > 0) {
+resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [for (config, i) in openAIConfig: if(length(openAIConfig) > 0) {
   name: openAIDeploymentName
   parent: cognitiveServices[i]
   properties: {
@@ -118,8 +118,6 @@ output extendedOpenAIConfig array = [for (config, i) in openAIConfig: {
   // Original openAIConfig properties
   name: config.name
   location: config.location
-  priority: config.?priority
-  weight: config.?weight
   // Additional properties
   sku: openAISku
   deploymentName: openAIDeploymentName

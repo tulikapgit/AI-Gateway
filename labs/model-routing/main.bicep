@@ -385,8 +385,7 @@ resource backendPoolOpenAI_1 'Microsoft.ApiManagement/service/backends@2023-05-0
     pool: {
       services: [for (config, i) in openAIConfig_1: {
           id: '/backends/${backendOpenAI_1[i].name}'
-        }
-      ]
+        }]
     }
   }
 }
@@ -401,8 +400,7 @@ resource backendPoolOpenAI_2 'Microsoft.ApiManagement/service/backends@2023-05-0
     pool: {
       services: [for (config, i) in openAIConfig_2: {
           id: '/backends/${backendOpenAI_2[i].name}'
-        }
-      ]
+        }]
     }
   }
 }
@@ -417,8 +415,7 @@ resource backendPoolOpenAI_3 'Microsoft.ApiManagement/service/backends@2023-05-0
     pool: {
       services: [for (config, i) in openAIConfig_3: {
           id: '/backends/${backendOpenAI_3[i].name}'
-        }
-      ]
+        }]
     }
   }
 }

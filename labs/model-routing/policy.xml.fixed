@@ -1,0 +1,75 @@
+<!-- filepath: c:\Users\tulikap\OneDrive - Microsoft\Fora\APIMSHG\AI-Gateway\labs\model-routing\policy.xml -->
+<policies>
+    <inbound>
+        <base />
+
+        <!-- Store the original request body for possible retries -->
+        <set-variable name="originalRequestBody" value="@(context.Request.Body.As&lt;string&gt;(preserveContent: true))" />
+        
+        <!-- Use a <choose> block to evaluate deployment-id -->
+        <choose>
+            <when condition="@(context.Request.MatchedParameters[&quot;deployment-id&quot;] == &quot;gpt-35-turbo-1106&quot;)">
+                <set-variable name="primary-backend" value="{backend-id-1}" />
+                <set-variable name="fallback-backend" value="{backend-id-2}" />
+            </when>
+            <when condition="@(context.Request.MatchedParameters[&quot;deployment-id&quot;] == &quot;gpt-35-turbo-0125&quot;)">
+                <set-variable name="primary-backend" value="{backend-id-2}" />
+                <set-variable name="fallback-backend" value="{backend-id-1}" />
+            </when>
+            <when condition="@(context.Request.MatchedParameters[&quot;deployment-id&quot;] == &quot;gpt-4o-2024-05-13&quot;)">
+                <set-variable name="primary-backend" value="{backend-id-3}" />
+                <set-variable name="fallback-backend" value="{backend-id-1}" />
+            </when>
+            <otherwise>
+                <set-variable name="primary-backend" value="{backend-id-1}" />
+                <set-variable name="fallback-backend" value="{backend-id-2}" />
+            </otherwise>
+        </choose>
+        
+        <!-- Set the primary backend service -->
+        <set-backend-service backend-id="@((string)context.Variables[&quot;primary-backend&quot;])" />
+
+        <authentication-managed-identity resource="https://cognitiveservices.azure.com" output-token-variable-name="managed-id-access-token" ignore-error="false" />
+
+        <set-header name="Authorization" exists-action="override">
+            <value>@("Bearer " + (string)context.Variables["managed-id-access-token"])</value>
+        </set-header>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <!-- Handle model not available errors and reroute to fallback backend -->
+        <choose>
+            <when condition="@(context.LastError.Message.Contains(&quot;model is currently overloaded&quot;) || 
+                              context.LastError.Message.Contains(&quot;model is not available&quot;) || 
+                              context.LastError.Message.Contains(&quot;model not found&quot;) ||
+                              context.LastError.Message.Contains(&quot;model does not exist&quot;) ||
+                              context.LastError.StatusCode == 404 ||
+                              context.LastError.StatusCode == 503)">
+                
+                <!-- Log the error before rerouting -->
+                <set-variable name="errorMessage" value="@(context.LastError.Message)" />
+                <trace source="Model Routing Policy" severity="warning">
+                    <message>Model not available or not found in primary backend. Error: @((string)context.Variables["errorMessage"]). Rerouting to fallback backend.</message>
+                </trace>
+                
+                <!-- Reset request body from the stored original -->
+                <set-body>@((string)context.Variables["originalRequestBody"])</set-body>
+                
+                <!-- Set the fallback backend service -->
+                <set-backend-service backend-id="@((string)context.Variables[&quot;fallback-backend&quot;])" />
+                
+                <!-- Forward the request to the fallback backend -->
+                <forward-request timeout="30" follow-redirects="true" />
+            </when>
+            <otherwise>
+                <!-- For other errors, pass through the base error handling -->
+                <base />
+            </otherwise>
+        </choose>
+    </on-error>
+</policies>

@@ -87,23 +87,17 @@ module openAIAPIModule '../../modules/apim/v1/openai-api.bicep' = {
 }
 
 // We presume the APIM resource has been created as part of this bicep flow.
-resource apim 'Microsoft.ApiManagement/service@2024-06-01-preview' existing = {
+resource apim 'Microsoft.ApiManagement/service@2021-12-01-preview' existing = {
   name: apiManagementName
-  dependsOn: [
-    apimModule
-  ]
 }
 
-resource api 'Microsoft.ApiManagement/service/apis@2024-06-01-preview' existing = {
+resource api 'Microsoft.ApiManagement/service/apis@2021-12-01-preview' existing = {
   parent: apim
   name: openAIAPIName
-  dependsOn: [
-    openAIAPIModule
-  ]
 }
 
 // Ignore the subscription that gets created in the APIM module and create three new ones for this lab.
-resource apimSubscriptions 'Microsoft.ApiManagement/service/subscriptions@2024-06-01-preview' = [for i in range(1, 3): {
+resource apimSubscriptions 'Microsoft.ApiManagement/service/subscriptions@2021-12-01-preview' = [for i in range(1, 3): {
   name: '${openAISubscriptionName}${i}'
   parent: apim
   properties: {
@@ -112,9 +106,6 @@ resource apimSubscriptions 'Microsoft.ApiManagement/service/subscriptions@2024-0
     scope: '/apis/${api.id}'
     state: 'active'
   }
-  dependsOn: [
-    api
-  ]
 }]
 
 // ------------------

@@ -1,0 +1,1090 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.11.1.770",
+      "templateHash": "2748046830490571076"
+    }
+  },
+  "parameters": {
+    "apimSku": {
+      "type": "string"
+    },
+    "openAIConfig": {
+      "type": "array",
+      "defaultValue": []
+    },
+    "openAIModelName": {
+      "type": "string"
+    },
+    "openAIModelVersion": {
+      "type": "string"
+    },
+    "openAIModelSKU": {
+      "type": "string"
+    },
+    "openAIDeploymentName": {
+      "type": "string"
+    },
+    "openAIAPIVersion": {
+      "type": "string",
+      "defaultValue": "2024-02-01"
+    }
+  },
+  "variables": {
+    "$fxv#0": "{\r\n    \"version\": \"Notebook/1.0\",\r\n    \"items\": [\r\n      {\r\n        \"type\": 1,\r\n        \"content\": {\r\n          \"json\": \"# APIM ♥️ OpenAI\\n---\\n\\nThis is a sample workbook to show OpenAI usage\\n\"\r\n        },\r\n        \"name\": \"text - 0\"\r\n      },\r\n      {\r\n        \"type\": 9,\r\n        \"content\": {\r\n          \"version\": \"KqlParameterItem/1.0\",\r\n          \"parameters\": [\r\n            {\r\n              \"id\": \"e94aafa3-c5d9-4523-89f0-4e87aa754511\",\r\n              \"version\": \"KqlParameterItem/1.0\",\r\n              \"name\": \"Apps\",\r\n              \"type\": 5,\r\n              \"isRequired\": true,\r\n              \"multiSelect\": true,\r\n              \"quote\": \"'\",\r\n              \"delimiter\": \",\",\r\n              \"typeSettings\": {\r\n                \"resourceTypeFilter\": {\r\n                  \"microsoft.insights/components\": true\r\n                },\r\n                \"additionalResourceOptions\": [\r\n                  \"value::all\",\r\n                  \"value::3\"\r\n                ]\r\n              },\r\n              \"value\": [\r\n                \"value::3\"\r\n              ]\r\n            },\r\n            {\r\n              \"id\": \"c4b69c01-2263-4ada-8d9c-43433b739ff3\",\r\n              \"version\": \"KqlParameterItem/1.0\",\r\n              \"name\": \"TimeRange\",\r\n              \"type\": 4,\r\n              \"typeSettings\": {\r\n                \"selectableValues\": [\r\n                  {\r\n                    \"durationMs\": 300000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.870Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 900000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 1800000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 3600000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 14400000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 43200000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 86400000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 172800000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 259200000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  },\r\n                  {\r\n                    \"durationMs\": 604800000,\r\n                    \"createdTime\": \"2018-08-06T23:52:38.871Z\",\r\n                    \"isInitialTime\": false,\r\n                    \"grain\": 1,\r\n                    \"useDashboardTimeRange\": false\r\n                  }\r\n                ],\r\n                \"allowCustom\": null\r\n              },\r\n              \"value\": {\r\n                \"durationMs\": 14400000\r\n              }\r\n            },\r\n            {\r\n              \"id\": \"1014e6d9-72b9-4729-a3a0-f5704768854e\",\r\n              \"version\": \"KqlParameterItem/1.0\",\r\n              \"name\": \"Operation\",\r\n              \"type\": 1,\r\n              \"isHiddenWhenLocked\": true,\r\n              \"value\": \"{\\\"App\\\":\\\"\\\",\\\"Operation\\\":\\\"\\\"}\"\r\n            },\r\n            {\r\n              \"id\": \"9fb8e529-2818-4000-bdf0-48808de48eb7\",\r\n              \"version\": \"KqlParameterItem/1.0\",\r\n              \"name\": \"Columns\",\r\n              \"type\": 2,\r\n              \"isRequired\": true,\r\n              \"multiSelect\": true,\r\n              \"quote\": \"\",\r\n              \"delimiter\": \",\",\r\n              \"jsonData\": \"[\\\"Mean\\\", \\\"Median\\\", \\\"p80\\\", \\\"p95\\\", \\\"p99\\\", \\\"Count\\\", \\\"Users\\\"]\",\r\n              \"value\": [\r\n                \"Mean\",\r\n                \"Median\",\r\n                \"p95\",\r\n                \"Count\"\r\n              ]\r\n            }\r\n          ],\r\n          \"style\": \"pills\",\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\"\r\n        },\r\n        \"name\": \"parameters - 1\"\r\n      },\r\n      {\r\n        \"type\": 3,\r\n        \"content\": {\r\n          \"version\": \"KqlItem/1.0\",\r\n          \"query\": \"let data = requests\\r\\n| where timestamp {TimeRange};\\r\\ndata\\r\\n| project timestamp, duration, resultCode, customDimensions\\r\\n| extend duration = round(duration, 2)\\r\\n| extend statusCode = resultCode\\r\\n| extend parsedCustomDimensions = parse_json(customDimensions)\\r\\n| extend apiName = tostring(parsedCustomDimensions.['API Name'])\\r\\n| extend apimSubscription = tostring(parsedCustomDimensions.['Subscription Name'])\\r\\n| extend userAgent = tostring(parsedCustomDimensions.['Request-User-agent'])\\r\\n| extend request_json = tostring(parsedCustomDimensions.['Request-Body'])\\r\\n| extend request = parse_json(request_json)\\r\\n| extend model = tostring(request.['model'])\\r\\n| extend messages = tostring(request.['messages'])\\r\\n| extend region = tostring(parsedCustomDimensions.['Response-x-ms-region'])\\r\\n| extend remainingTokens = tostring(parsedCustomDimensions.['Response-x-ratelimit-remaining-tokens'])\\r\\n| extend remainingRequests = tostring(parsedCustomDimensions.['Response-x-ratelimit-remaining-requests'])\\r\\n| extend response_json = tostring(parsedCustomDimensions.['Response-Body'])\\r\\n| extend response = parse_json(response_json)\\r\\n| extend promptTokens = tostring(response.['usage'].['prompt_tokens'])\\r\\n| extend completionTokens = tostring(response.['usage'].['completion_tokens'])\\r\\n| extend totalTokens = tostring(response.['usage'].['total_tokens'])\\r\\n| extend completion = tostring(response.['choices'][0].['message'].['content'])\\r\\n| project timestamp, apiName, apimSubscription, duration, statusCode, userAgent, model, messages, completion, region\\r\\n| order by timestamp desc\\r\\n\",\r\n          \"size\": 0,\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\"\r\n        },\r\n        \"name\": \"query - 18\"\r\n      },\r\n      {\r\n        \"type\": 3,\r\n        \"content\": {\r\n          \"version\": \"KqlItem/1.0\",\r\n          \"query\": \"let data = requests\\r\\n| where timestamp {TimeRange};\\r\\ndata\\r\\n| project timestamp, duration, resultCode, customDimensions\\r\\n| extend parsedCustomDimensions = parse_json(customDimensions)\\r\\n| extend request_json = tostring(parsedCustomDimensions.['Request-Body'])\\r\\n| extend request = parse_json(request_json)\\r\\n| extend model = tostring(request.['model'])\\r\\n| extend region = tostring(parsedCustomDimensions.['Response-x-ms-region'])\\r\\n| extend remainingTokens = tostring(parsedCustomDimensions.['Response-x-ratelimit-remaining-tokens'])\\r\\n| extend remainingRequests = tostring(parsedCustomDimensions.['Response-x-ratelimit-remaining-requests'])\\r\\n| extend response_json = tostring(parsedCustomDimensions.['Response-Body'])\\r\\n| extend response = parse_json(response_json)\\r\\n| extend promptTokens = tostring(response.['usage'].['prompt_tokens'])\\r\\n| extend completionTokens = tostring(response.['usage'].['completion_tokens'])\\r\\n| extend totalTokens = tostring(response.['usage'].['total_tokens'])\\r\\n| project timestamp, model, region, promptTokens, completionTokens, totalTokens, remainingTokens, remainingRequests\\r\\n| order by timestamp desc\\r\\n\",\r\n          \"size\": 0,\r\n          \"title\": \"Token count\",\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\"\r\n        },\r\n        \"name\": \"query - 18 - Copy\"\r\n      },\r\n      {\r\n        \"type\": 3,\r\n        \"content\": {\r\n          \"version\": \"KqlItem/1.0\",\r\n          \"query\": \"let data = requests\\n| where timestamp {TimeRange};\\ndata\\n| summarize Mean = avg(duration), (Median, p80, p95, p99) = percentiles(duration, 50, 80, 95, 99), Count = count(), Users = dcount(user_Id) by name, appName\\n| project App = appName, Operation = name, Mean, Median, p80, p95, p99, Count, Users, rank = 2\\n| union (data\\n    | summarize Mean = avg(duration), (Median, p80, p95, p99) = percentiles(duration, 50, 80, 95, 99), Count = count(), Users = dcount(user_Id)\\n    | project App = '🔸 All Apps', Operation = '🔸 All operations', Mean, Median, p80, p95, p99, Count, Users, rank = 1)\\n| extend Relevance = Mean * Count\\n| order by rank asc, Relevance desc\\n| project-away Relevance, rank\\n| extend Mean = round(Mean, 2), Median = round(Median, 1), p80 = round(p80, 2), p95 = round(p95, 2), p99 = round(p99, 2)\\n| project App, Operation, {Columns}\\n\",\r\n          \"size\": 0,\r\n          \"title\": \"Request Details\",\r\n          \"exportParameterName\": \"Operation\",\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\",\r\n          \"crossComponentResources\": [\r\n            \"{Apps}\"\r\n          ],\r\n          \"gridSettings\": {\r\n            \"formatters\": [\r\n              {\r\n                \"columnMatch\": \"Mean|Median|p80|p95|p99\",\r\n                \"formatter\": 8,\r\n                \"formatOptions\": {\r\n                  \"min\": 0,\r\n                  \"max\": null,\r\n                  \"palette\": \"red\"\r\n                }\r\n              },\r\n              {\r\n                \"columnMatch\": \"Count\",\r\n                \"formatter\": 8,\r\n                \"formatOptions\": {\r\n                  \"min\": 0,\r\n                  \"max\": null,\r\n                  \"palette\": \"blue\"\r\n                }\r\n              },\r\n              {\r\n                \"columnMatch\": \"Users\",\r\n                \"formatter\": 8,\r\n                \"formatOptions\": {\r\n                  \"min\": 0,\r\n                  \"max\": null,\r\n                  \"palette\": \"blueDark\"\r\n                }\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        \"name\": \"query - 2\"\r\n      },\r\n      {\r\n        \"type\": 1,\r\n        \"content\": {\r\n          \"json\": \"💡 *Click on the rows of the table above to see details for other operations*\"\r\n        },\r\n        \"name\": \"text - 3\"\r\n      },\r\n      {\r\n        \"type\": 1,\r\n        \"content\": {\r\n          \"json\": \"\"\r\n        },\r\n        \"name\": \"text - 4\"\r\n      },\r\n      {\r\n        \"type\": 9,\r\n        \"content\": {\r\n          \"version\": \"KqlParameterItem/1.0\",\r\n          \"parameters\": [\r\n            {\r\n              \"id\": \"b09bfb5a-093f-4099-a5fb-e0fca139cc3d\",\r\n              \"version\": \"KqlParameterItem/1.0\",\r\n              \"name\": \"SelectedOperation\",\r\n              \"type\": 1,\r\n              \"isRequired\": true,\r\n              \"query\": \"let row = dynamic({Operation});\\r\\nlet operation = tostring(row.Operation);\\r\\nlet app = tostring(row.App);\\r\\nrange i from 1 to 1 step 1\\r\\n| project Operation = iff((operation == '' and app == '') or (operation == '🔸 All operations' and app == '🔸 All Apps'), 'all operations', operation)\",\r\n              \"isHiddenWhenLocked\": true,\r\n              \"jsonData\": \"\",\r\n              \"resourceType\": \"microsoft.insights/components\"\r\n            }\r\n          ],\r\n          \"style\": \"pills\",\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\"\r\n        },\r\n        \"name\": \"parameters - 5\"\r\n      },\r\n      {\r\n        \"type\": 1,\r\n        \"content\": {\r\n          \"json\": \"## Operation Details -- {SelectedOperation}\\n\"\r\n        },\r\n        \"name\": \"text - 6\"\r\n      },\r\n      {\r\n        \"type\": 1,\r\n        \"content\": {\r\n          \"json\": \"### Operation Duration (ms)\\n\"\r\n        },\r\n        \"customWidth\": \"50\",\r\n        \"name\": \"text - 7\"\r\n      },\r\n      {\r\n        \"type\": 1,\r\n        \"content\": {\r\n          \"json\": \"### All Operations\"\r\n        },\r\n        \"customWidth\": \"50\",\r\n        \"name\": \"text - 8\"\r\n      },\r\n      {\r\n        \"type\": 9,\r\n        \"content\": {\r\n          \"version\": \"KqlParameterItem/1.0\",\r\n          \"parameters\": [\r\n            {\r\n              \"id\": \"1bbd1900-9445-4ac0-bb5d-f15dbe5f4485\",\r\n              \"version\": \"KqlParameterItem/1.0\",\r\n              \"name\": \"Show\",\r\n              \"type\": 2,\r\n              \"isRequired\": true,\r\n              \"query\": \"datatable(value:string, label:string)[\\n\\\"avg(duration)\\\", \\\"Mean\\\",\\n\\\"percentile(duration, 50)\\\", \\\"Median\\\",\\n\\\"percentile(duration, 80)\\\", \\\"p80\\\",\\n\\\"percentile(duration, 95)\\\", \\\"p95\\\",\\n\\\"percentile(duration, 99)\\\", \\\"p99\\\"\\n]\",\r\n              \"value\": \"percentile(duration, 95)\",\r\n              \"resourceType\": \"microsoft.insights/components\"\r\n            }\r\n          ],\r\n          \"style\": \"pills\",\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\"\r\n        },\r\n        \"name\": \"parameters - 9\"\r\n      },\r\n      {\r\n        \"type\": 3,\r\n        \"content\": {\r\n          \"version\": \"KqlItem/1.0\",\r\n          \"query\": \"let row = dynamic({Operation});\\nlet operation = tostring(row.Operation);\\nlet app = tostring(row.App);\\nrequests\\n| where timestamp {TimeRange}\\n| where (name == operation and appName == app) or (operation == '' and app == '') or (operation == '🔸 All operations' and app == '🔸 All Apps')\\n| make-series Duration = {Show} default = 0 on timestamp in range({TimeRange:start}, {TimeRange:end}, {TimeRange:grain})\\n| mvexpand timestamp to typeof(datetime), Duration to typeof(long)\\n\",\r\n          \"size\": 1,\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\",\r\n          \"crossComponentResources\": [\r\n            \"{Apps}\"\r\n          ],\r\n          \"visualization\": \"areachart\"\r\n        },\r\n        \"customWidth\": \"50\",\r\n        \"name\": \"query - 10\"\r\n      },\r\n      {\r\n        \"type\": 3,\r\n        \"content\": {\r\n          \"version\": \"KqlItem/1.0\",\r\n          \"query\": \"let row = dynamic({Operation});\\nlet operation = tostring(row.Operation);\\nlet app = tostring(row.App);\\nrequests\\n| where timestamp {TimeRange}\\n| where (name == operation and appName == app) or (operation == '' and app == '') or (operation == '🔸 All operations' and app == '🔸 All Apps')\\n| make-series Requests = count() default = 0 on timestamp in range({TimeRange:start}, {TimeRange:end}, {TimeRange:grain})\\n| mvexpand timestamp to typeof(datetime), Requests to typeof(long)\\n\",\r\n          \"size\": 1,\r\n          \"queryType\": 0,\r\n          \"resourceType\": \"microsoft.insights/components\",\r\n          \"crossComponentResources\": [\r\n            \"{Apps}\"\r\n          ],\r\n          \"visualization\": \"areachart\"\r\n        },\r\n        \"customWidth\": \"50\",\r\n        \"name\": \"query - 11\"\r\n      }\r\n    ],\r\n    \"fallbackResourceIds\": [\r\n    ],\r\n    \"fromTemplateId\": \"community-Workbooks/Performance/Performance Insights\",\r\n    \"$schema\": \"https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json\"\r\n  }\r\n",
+    "resourceSuffix": "[uniqueString(subscription().id, resourceGroup().id)]",
+    "apiManagementName": "[format('apim-{0}', variables('resourceSuffix'))]",
+    "openAISubscriptionName": "openai-subscription",
+    "openAISubscriptionDescription": "OpenAI Subscription",
+    "openAIAPIName": "openai",
+    "policyXml": "<policies>\r\n    <inbound>\r\n        <base />\r\n        <authentication-managed-identity resource=\"https://cognitiveservices.azure.com\" output-token-variable-name=\"managed-id-access-token\" ignore-error=\"false\" /> \r\n        <set-header name=\"Authorization\" exists-action=\"override\">  \r\n            <value>@(\"Bearer \" + (string)context.Variables[\"managed-id-access-token\"])</value>  \r\n        </set-header>\r\n        <set-backend-service backend-id=\"{backend-id}\" />\r\n        <azure-openai-emit-token-metric namespace=\"openai\">\r\n            <dimension name=\"Subscription ID\" value=\"@(context.Subscription.Id)\" />\r\n            <dimension name=\"Client IP\" value=\"@(context.Request.IpAddress)\" />\r\n            <dimension name=\"API ID\" value=\"@(context.Api.Id)\" />\r\n            <dimension name=\"User ID\" value=\"@(context.Request.Headers.GetValueOrDefault(\"x-user-id\", \"N/A\"))\" />\r\n        </azure-openai-emit-token-metric>\r\n    </inbound>\r\n    <backend>\r\n        <base />\r\n    </backend>\r\n    <outbound>\r\n        <base />\r\n    </outbound>\r\n    <on-error>\r\n        <base />\r\n    </on-error>\r\n</policies>\r\n",
+    "updatedPolicyXml": "[replace(variables('policyXml'), '{backend-id}', if(greater(length(parameters('openAIConfig')), 1), 'openai-backend-pool', parameters('openAIConfig')[0].name))]"
+  },
+  "resources": [
+    {
+      "copy": {
+        "name": "apimSubscriptions",
+        "count": "[length(range(1, 3))]"
+      },
+      "type": "Microsoft.ApiManagement/service/subscriptions",
+      "apiVersion": "2021-12-01-preview",
+      "name": "[format('{0}/{1}', variables('apiManagementName'), format('{0}{1}', variables('openAISubscriptionName'), range(1, 3)[copyIndex()]))]",
+      "properties": {
+        "allowTracing": true,
+        "displayName": "[format('{0} {1}', variables('openAISubscriptionDescription'), range(1, 3)[copyIndex()])]",
+        "scope": "[format('/apis/{0}', resourceId('Microsoft.ApiManagement/service/apis', variables('apiManagementName'), variables('openAIAPIName')))]",
+        "state": "active"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "lawModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.11.1.770",
+              "templateHash": "10751159262941823146"
+            }
+          },
+          "parameters": {
+            "resourceSuffix": {
+              "type": "string",
+              "defaultValue": "[uniqueString(subscription().id, resourceGroup().id)]",
+              "metadata": {
+                "description": "The suffix to append to the Log Analytics name. Defaults to a unique string based on subscription and resource group IDs."
+              }
+            },
+            "logAnalyticsName": {
+              "type": "string",
+              "defaultValue": "[format('workspace-{0}', parameters('resourceSuffix'))]",
+              "metadata": {
+                "description": "Name of the Log Analytics resource. Defaults to \"workspace-<resourceSuffix>\"."
+              }
+            },
+            "logAnalyticsLocation": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location of the Log Analytics resource"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2023-09-01",
+              "name": "[parameters('logAnalyticsName')]",
+              "location": "[parameters('logAnalyticsLocation')]",
+              "properties": {
+                "retentionInDays": 30,
+                "features": {
+                  "searchVersion": 1
+                },
+                "sku": {
+                  "name": "PerGB2018"
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
+            },
+            "customerId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))).customerId]"
+            },
+            "primarySharedKey": {
+              "type": "string",
+              "value": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName')), '2023-09-01').primarySharedKey]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "appInsightsModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "workbookJson": {
+            "value": "[variables('$fxv#0')]"
+          },
+          "lawId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'lawModule')).outputs.id.value]"
+          },
+          "customMetricsOptedInType": {
+            "value": "WithDimensions"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.11.1.770",
+              "templateHash": "12415202075227316073"
+            }
+          },
+          "parameters": {
+            "resourceSuffix": {
+              "type": "string",
+              "defaultValue": "[uniqueString(subscription().id, resourceGroup().id)]",
+              "metadata": {
+                "description": "The suffix to append to the Application Insights name. Defaults to a unique string based on subscription and resource group IDs."
+              }
+            },
+            "applicationInsightsName": {
+              "type": "string",
+              "defaultValue": "[format('insights-{0}', parameters('resourceSuffix'))]",
+              "metadata": {
+                "description": "Name of the Application Insights resource. Defaults to \"insights-<resourceSuffix>\"."
+              }
+            },
+            "applicationInsightsLocation": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location of the Application Insights resource"
+              }
+            },
+            "customMetricsOptedInType": {
+              "type": "string",
+              "defaultValue": "Off",
+              "allowedValues": [
+                "WithDimensions",
+                "NoDimensions",
+                "NoMeasurements",
+                "Off"
+              ],
+              "metadata": {
+                "description": "The custom metrics opted in type. Default is Off"
+              }
+            },
+            "useWorkbook": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Indicate whether workbook is used. Default is false"
+              }
+            },
+            "workbookName": {
+              "type": "string",
+              "defaultValue": "OpenAIUsageAnalysis",
+              "metadata": {
+                "description": "Name for the Workbook. Defaults to \"OpenAIUsageAnalysis\"."
+              }
+            },
+            "workbookLocation": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for the Workbook"
+              }
+            },
+            "workbookDisplayName": {
+              "type": "string",
+              "defaultValue": "OpenAI Usage Analysis",
+              "metadata": {
+                "description": "Display Name for the Workbook. Defaults to \"OpenAI Usage Analysis\"."
+              }
+            },
+            "workbookJson": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "JSON string for the Workbook"
+              }
+            },
+            "lawId": {
+              "type": "string",
+              "metadata": {
+                "description": "Log Analytics Workspace Id"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Insights/components",
+              "apiVersion": "2020-02-02",
+              "name": "[parameters('applicationInsightsName')]",
+              "location": "[parameters('applicationInsightsLocation')]",
+              "kind": "web",
+              "properties": {
+                "Application_Type": "web",
+                "WorkspaceResourceId": "[parameters('lawId')]",
+                "CustomMetricsOptedInType": "[parameters('customMetricsOptedInType')]"
+              }
+            },
+            {
+              "condition": "[parameters('useWorkbook')]",
+              "type": "Microsoft.Insights/workbooks",
+              "apiVersion": "2022-04-01",
+              "name": "[guid(resourceGroup().id, parameters('workbookName'))]",
+              "location": "[parameters('workbookLocation')]",
+              "kind": "shared",
+              "properties": {
+                "displayName": "[parameters('workbookDisplayName')]",
+                "serializedData": "[parameters('workbookJson')]",
+                "sourceId": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]",
+                "category": "OpenAI"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]"
+            },
+            "instrumentationKey": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))).InstrumentationKey]"
+            },
+            "appId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))).AppId]"
+            },
+            "applicationInsightsName": {
+              "type": "string",
+              "value": "[parameters('applicationInsightsName')]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'lawModule')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "apimModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "apimSku": {
+            "value": "[parameters('apimSku')]"
+          },
+          "appInsightsInstrumentationKey": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule')).outputs.instrumentationKey.value]"
+          },
+          "appInsightsId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule')).outputs.id.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.11.1.770",
+              "templateHash": "1024893128748433807"
+            }
+          },
+          "parameters": {
+            "resourceSuffix": {
+              "type": "string",
+              "defaultValue": "[uniqueString(subscription().id, resourceGroup().id)]",
+              "metadata": {
+                "description": "The suffix to append to the API Management instance name. Defaults to a unique string based on subscription and resource group IDs."
+              }
+            },
+            "apiManagementName": {
+              "type": "string",
+              "defaultValue": "[format('apim-{0}', parameters('resourceSuffix'))]",
+              "metadata": {
+                "description": "The name of the API Management instance. Defaults to \"apim-<resourceSuffix>\"."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "The location of the API Management instance. Defaults to the resource group location."
+              }
+            },
+            "publisherEmail": {
+              "type": "string",
+              "defaultValue": "noreply@microsoft.com",
+              "metadata": {
+                "description": "The email address of the publisher. Defaults to \"noreply@microsoft.com\"."
+              }
+            },
+            "publisherName": {
+              "type": "string",
+              "defaultValue": "Microsoft",
+              "metadata": {
+                "description": "The name of the publisher. Defaults to \"Microsoft\"."
+              }
+            },
+            "apimLoggerName": {
+              "type": "string",
+              "defaultValue": "apim-logger",
+              "metadata": {
+                "description": "Name of the APIM Logger"
+              }
+            },
+            "apimLoggerDescription": {
+              "type": "string",
+              "defaultValue": "APIM Logger for OpenAI API",
+              "metadata": {
+                "description": "Description of the APIM Logger"
+              }
+            },
+            "apimSku": {
+              "type": "string",
+              "defaultValue": "Basicv2",
+              "allowedValues": [
+                "Consumption",
+                "Developer",
+                "Basic",
+                "Basicv2",
+                "Standard",
+                "Standardv2",
+                "Premium"
+              ],
+              "metadata": {
+                "description": "The pricing tier of this API Management service"
+              }
+            },
+            "appInsightsInstrumentationKey": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "The instrumentation key for Application Insights"
+              }
+            },
+            "appInsightsId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "The resource ID for Application Insights"
+              }
+            },
+            "apimManagedIdentityType": {
+              "type": "string",
+              "defaultValue": "SystemAssigned",
+              "allowedValues": [
+                "SystemAssigned",
+                "UserAssigned",
+                "SystemAssigned, UserAssigned"
+              ],
+              "metadata": {
+                "description": "The type of managed identity to by used with API Management"
+              }
+            },
+            "apimUserAssignedManagedIdentityId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "The user-assigned managed identity ID to be used with API Management"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ApiManagement/service",
+              "apiVersion": "2024-05-01",
+              "name": "[parameters('apiManagementName')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "[parameters('apimSku')]",
+                "capacity": 1
+              },
+              "properties": {
+                "publisherEmail": "[parameters('publisherEmail')]",
+                "publisherName": "[parameters('publisherName')]"
+              },
+              "identity": {
+                "type": "[parameters('apimManagedIdentityType')]",
+                "userAssignedIdentities": "[if(and(equals(parameters('apimManagedIdentityType'), 'UserAssigned'), not(equals(parameters('apimUserAssignedManagedIdentityId'), ''))), createObject(format('{0}', parameters('apimUserAssignedManagedIdentityId')), createObject()), null())]"
+              }
+            },
+            {
+              "condition": "[and(not(empty(parameters('appInsightsId'))), not(empty(parameters('appInsightsInstrumentationKey'))))]",
+              "type": "Microsoft.ApiManagement/service/loggers",
+              "apiVersion": "2024-05-01",
+              "name": "[format('{0}/{1}', parameters('apiManagementName'), parameters('apimLoggerName'))]",
+              "properties": {
+                "credentials": {
+                  "instrumentationKey": "[parameters('appInsightsInstrumentationKey')]"
+                },
+                "description": "[parameters('apimLoggerDescription')]",
+                "isBuffered": false,
+                "loggerType": "applicationInsights",
+                "resourceId": "[parameters('appInsightsId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apiManagementName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.ApiManagement/service', parameters('apiManagementName'))]"
+            },
+            "name": {
+              "type": "string",
+              "value": "[parameters('apiManagementName')]"
+            },
+            "principalId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ApiManagement/service', parameters('apiManagementName')), '2024-05-01', 'full').identity.principalId]"
+            },
+            "gatewayUrl": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ApiManagement/service', parameters('apiManagementName'))).gatewayUrl]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'appInsightsModule')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "openAIModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "openAIConfig": {
+            "value": "[parameters('openAIConfig')]"
+          },
+          "openAIDeploymentName": {
+            "value": "[parameters('openAIDeploymentName')]"
+          },
+          "openAIModelName": {
+            "value": "[parameters('openAIModelName')]"
+          },
+          "openAIModelVersion": {
+            "value": "[parameters('openAIModelVersion')]"
+          },
+          "openAIModelSKU": {
+            "value": "[parameters('openAIModelSKU')]"
+          },
+          "apimPrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'apimModule')).outputs.principalId.value]"
+          },
+          "lawId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'lawModule')).outputs.id.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.11.1.770",
+              "templateHash": "13292611024662212186"
+            }
+          },
+          "parameters": {
+            "openAISku": {
+              "type": "string",
+              "defaultValue": "S0",
+              "allowedValues": [
+                "S0"
+              ],
+              "metadata": {
+                "description": "Azure OpenAI Sku"
+              }
+            },
+            "openAIDeploymentName": {
+              "type": "string",
+              "metadata": {
+                "description": "Azure OpenAI Deployment Name"
+              }
+            },
+            "openAIModelName": {
+              "type": "string",
+              "metadata": {
+                "description": "Model Name"
+              }
+            },
+            "openAIModelVersion": {
+              "type": "string",
+              "metadata": {
+                "description": "Model Version"
+              }
+            },
+            "openAIModelSKU": {
+              "type": "string",
+              "defaultValue": "Standard",
+              "metadata": {
+                "description": "Model SKU"
+              }
+            },
+            "openAIModelCapacity": {
+              "type": "int",
+              "defaultValue": 20,
+              "metadata": {
+                "description": "Model Capacity"
+              }
+            },
+            "openAIConfig": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Configuration array for OpenAI resources"
+              }
+            },
+            "lawId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Log Analytics Workspace Id"
+              }
+            },
+            "apimPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "APIM Pricipal Id"
+              }
+            }
+          },
+          "variables": {
+            "$fxv#0": {
+              "__source": "https://learn.microsoft.com/azure/role-based-access-control/built-in-roles",
+              "AcrPull": "7f951dda-4ed3-4680-a7ca-43fe172d538d",
+              "AzureEventHubsDataOwner": "f526a384-b230-433a-b45c-95f59c4a2dec",
+              "AzureEventHubsDataSender": "2b629674-e913-4c01-ae53-ef4638d8f975",
+              "CognitiveServicesOpenAIUser": "5e0bd9bd-7b93-4f28-af87-19fc36ad61bd",
+              "CognitiveServicesUser": "a97b65f3-24c7-4388-baec-2e87135dc908",
+              "SearchIndexDataContributor": "8ebe5a00-799e-43f5-93ac-243d3dce84a7",
+              "SearchServiceContributor": "7ca78c08-252a-4471-8644-bb5ff32d4ba0"
+            },
+            "resourceSuffix": "[uniqueString(subscription().id, resourceGroup().id)]",
+            "azureRoles": "[variables('$fxv#0')]",
+            "cognitiveServicesOpenAIUserRoleDefinitionID": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('azureRoles').CognitiveServicesOpenAIUser)]"
+          },
+          "resources": [
+            {
+              "condition": "[greater(length(parameters('openAIConfig')), 0)]",
+              "copy": {
+                "name": "cognitiveServices",
+                "count": "[length(parameters('openAIConfig'))]"
+              },
+              "type": "Microsoft.CognitiveServices/accounts",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix'))]",
+              "location": "[parameters('openAIConfig')[copyIndex()].location]",
+              "sku": {
+                "name": "[parameters('openAISku')]"
+              },
+              "kind": "OpenAI",
+              "properties": {
+                "apiProperties": {
+                  "statisticsEnabled": false
+                },
+                "customSubDomainName": "[toLower(format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]"
+              }
+            },
+            {
+              "condition": "[and(greater(length(parameters('openAIConfig')), 0), not(equals(parameters('lawId'), '')))]",
+              "copy": {
+                "name": "diagnosticSettings",
+                "count": "[length(parameters('openAIConfig'))]"
+              },
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]",
+              "name": "[format('{0}-diagnostics', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]",
+              "properties": {
+                "workspaceId": "[if(not(equals(parameters('lawId'), '')), parameters('lawId'), null())]",
+                "logs": [],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.CognitiveServices/accounts', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]",
+                "[resourceId('Microsoft.CognitiveServices/accounts', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]"
+              ]
+            },
+            {
+              "condition": "[greater(length(parameters('openAIConfig')), 0)]",
+              "copy": {
+                "name": "deployment",
+                "count": "[length(parameters('openAIConfig'))]",
+                "mode": "serial",
+                "batchSize": 1
+              },
+              "type": "Microsoft.CognitiveServices/accounts/deployments",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')), parameters('openAIDeploymentName'))]",
+              "properties": {
+                "model": {
+                  "format": "OpenAI",
+                  "name": "[parameters('openAIModelName')]",
+                  "version": "[parameters('openAIModelVersion')]"
+                }
+              },
+              "sku": {
+                "name": "[parameters('openAIModelSKU')]",
+                "capacity": "[parameters('openAIModelCapacity')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.CognitiveServices/accounts', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]"
+              ]
+            },
+            {
+              "condition": "[greater(length(parameters('openAIConfig')), 0)]",
+              "copy": {
+                "name": "roleAssignment",
+                "count": "[length(parameters('openAIConfig'))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]",
+              "name": "[guid(subscription().id, resourceGroup().id, parameters('openAIConfig')[copyIndex()].name, variables('cognitiveServicesOpenAIUserRoleDefinitionID'))]",
+              "properties": {
+                "roleDefinitionId": "[variables('cognitiveServicesOpenAIUserRoleDefinitionID')]",
+                "principalId": "[parameters('apimPrincipalId')]",
+                "principalType": "ServicePrincipal"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.CognitiveServices/accounts', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix')))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "extendedOpenAIConfig": {
+              "type": "array",
+              "copy": {
+                "count": "[length(parameters('openAIConfig'))]",
+                "input": {
+                  "name": "[parameters('openAIConfig')[copyIndex()].name]",
+                  "location": "[parameters('openAIConfig')[copyIndex()].location]",
+                  "sku": "[parameters('openAISku')]",
+                  "deploymentName": "[parameters('openAIDeploymentName')]",
+                  "modelName": "[parameters('openAIModelName')]",
+                  "modelVersion": "[parameters('openAIModelVersion')]",
+                  "modelCapacity": "[parameters('openAIModelCapacity')]",
+                  "cognitiveService": "[reference(resourceId('Microsoft.CognitiveServices/accounts', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix'))), '2023-05-01', 'full')]",
+                  "endpoint": "[reference(resourceId('Microsoft.CognitiveServices/accounts', format('{0}-{1}', parameters('openAIConfig')[copyIndex()].name, variables('resourceSuffix'))), '2023-05-01').endpoint]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'apimModule')]",
+        "[resourceId('Microsoft.Resources/deployments', 'lawModule')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "openAIAPIModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "policyXml": {
+            "value": "[variables('updatedPolicyXml')]"
+          },
+          "openAIConfig": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'openAIModule')).outputs.extendedOpenAIConfig.value]"
+          },
+          "openAIAPIVersion": {
+            "value": "[parameters('openAIAPIVersion')]"
+          },
+          "appInsightsInstrumentationKey": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule')).outputs.instrumentationKey.value]"
+          },
+          "appInsightsId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule')).outputs.id.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.11.1.770",
+              "templateHash": "9545433395985204221"
+            }
+          },
+          "parameters": {
+            "resourceSuffix": {
+              "type": "string",
+              "defaultValue": "[uniqueString(subscription().id, resourceGroup().id)]",
+              "metadata": {
+                "description": "The suffix to append to the API Management instance name. Defaults to a unique string based on subscription and resource group IDs."
+              }
+            },
+            "apiManagementName": {
+              "type": "string",
+              "defaultValue": "[format('apim-{0}', parameters('resourceSuffix'))]",
+              "metadata": {
+                "description": "The name of the API Management instance. Defaults to \"apim-<resourceSuffix>\"."
+              }
+            },
+            "apimLoggerName": {
+              "type": "string",
+              "defaultValue": "apim-logger",
+              "metadata": {
+                "description": "Name of the APIM Logger"
+              }
+            },
+            "policyXml": {
+              "type": "string",
+              "metadata": {
+                "description": "The XML content for the API policy"
+              }
+            },
+            "openAIConfig": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Configuration array for OpenAI resources"
+              }
+            },
+            "openAIAPIName": {
+              "type": "string",
+              "defaultValue": "openai",
+              "metadata": {
+                "description": "The name of the OpenAI API in API Management. Defaults to \"openai\"."
+              }
+            },
+            "openAIAPIDescription": {
+              "type": "string",
+              "defaultValue": "Azure OpenAI API inferencing API",
+              "metadata": {
+                "description": "The description of the OpenAI API in API Management. Defaults to \"Azure OpenAI API inferencing API\"."
+              }
+            },
+            "openAIAPIDisplayName": {
+              "type": "string",
+              "defaultValue": "OpenAI",
+              "metadata": {
+                "description": "The display name of the OpenAI API in API Management. Defaults to \"OpenAI\"."
+              }
+            },
+            "openAIAPIPath": {
+              "type": "string",
+              "defaultValue": "openai",
+              "metadata": {
+                "description": "The path of the OpenAI API in API Management. Defaults to \"openai\"."
+              }
+            },
+            "openAIAPIVersion": {
+              "type": "string",
+              "defaultValue": "2024-02-01",
+              "metadata": {
+                "description": "The version of the OpenAI API in API Management. Defaults to \"2024-02-01\"."
+              }
+            },
+            "openAIAPISpecURL": {
+              "type": "string",
+              "defaultValue": "[format('https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/{0}/inference.json', parameters('openAIAPIVersion'))]",
+              "metadata": {
+                "description": "The URL for the OpenAI API specification"
+              }
+            },
+            "openAIBackendPoolName": {
+              "type": "string",
+              "defaultValue": "openai-backend-pool",
+              "metadata": {
+                "description": "The name of the OpenAI backend pool. Defaults to \"openai-backend-pool\"."
+              }
+            },
+            "openAIBackendPoolDescription": {
+              "type": "string",
+              "defaultValue": "Load balancer for multiple OpenAI endpoints",
+              "metadata": {
+                "description": "The description of the OpenAI backend pool. Defaults to \"Load balancer for multiple OpenAI endpoints\"."
+              }
+            },
+            "openAISubscriptionName": {
+              "type": "string",
+              "defaultValue": "openai-subscription",
+              "metadata": {
+                "description": "The name of the OpenAI subscription in API Management. Defaults to \"openai-subscription\"."
+              }
+            },
+            "openAISubscriptionDescription": {
+              "type": "string",
+              "defaultValue": "OpenAI Subscription",
+              "metadata": {
+                "description": "The description of the OpenAI subscription in API Management. Defaults to \"OpenAI Subscription\"."
+              }
+            },
+            "appInsightsInstrumentationKey": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "The instrumentation key for Application Insights"
+              }
+            },
+            "appInsightsId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "The resource ID for Application Insights"
+              }
+            }
+          },
+          "variables": {
+            "logSettings": {
+              "headers": [
+                "Content-type",
+                "User-agent",
+                "x-ms-region",
+                "x-ratelimit-remaining-tokens",
+                "x-ratelimit-remaining-requests"
+              ],
+              "body": {
+                "bytes": 8192
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ApiManagement/service/apis",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', parameters('apiManagementName'), parameters('openAIAPIName'))]",
+              "properties": {
+                "apiType": "http",
+                "description": "[parameters('openAIAPIDescription')]",
+                "displayName": "[parameters('openAIAPIDisplayName')]",
+                "format": "openapi-link",
+                "path": "[parameters('openAIAPIPath')]",
+                "protocols": [
+                  "https"
+                ],
+                "subscriptionKeyParameterNames": {
+                  "header": "api-key",
+                  "query": "api-key"
+                },
+                "subscriptionRequired": true,
+                "type": "http",
+                "value": "[parameters('openAIAPISpecURL')]"
+              }
+            },
+            {
+              "type": "Microsoft.ApiManagement/service/apis/policies",
+              "apiVersion": "2022-08-01",
+              "name": "[format('{0}/{1}/{2}', parameters('apiManagementName'), parameters('openAIAPIName'), 'policy')]",
+              "properties": {
+                "format": "rawxml",
+                "value": "[parameters('policyXml')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apiManagementName'), parameters('openAIAPIName'))]"
+              ]
+            },
+            {
+              "condition": "[greater(length(parameters('openAIConfig')), 0)]",
+              "copy": {
+                "name": "backendOpenAI",
+                "count": "[length(parameters('openAIConfig'))]"
+              },
+              "type": "Microsoft.ApiManagement/service/backends",
+              "apiVersion": "2022-08-01",
+              "name": "[format('{0}/{1}', parameters('apiManagementName'), parameters('openAIConfig')[copyIndex()].name)]",
+              "properties": {
+                "description": "backend description",
+                "url": "[format('{0}/openai', parameters('openAIConfig')[copyIndex()].endpoint)]",
+                "protocol": "http",
+                "circuitBreaker": {
+                  "rules": [
+                    {
+                      "failureCondition": {
+                        "count": 1,
+                        "errorReasons": [
+                          "Server errors"
+                        ],
+                        "interval": "PT5M",
+                        "statusCodeRanges": [
+                          {
+                            "min": 429,
+                            "max": 429
+                          }
+                        ]
+                      },
+                      "name": "openAIBreakerRule",
+                      "tripDuration": "PT1M",
+                      "acceptRetryAfter": true
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "condition": "[greater(length(parameters('openAIConfig')), 1)]",
+              "type": "Microsoft.ApiManagement/service/backends",
+              "apiVersion": "2021-12-01-preview",
+              "name": "[format('{0}/{1}', parameters('apiManagementName'), parameters('openAIBackendPoolName'))]",
+              "properties": {
+                "description": "[parameters('openAIBackendPoolDescription')]",
+                "type": "Pool",
+                "pool": {
+                  "copy": [
+                    {
+                      "name": "services",
+                      "count": "[length(parameters('openAIConfig'))]",
+                      "input": {
+                        "id": "[format('/backends/{0}', parameters('openAIConfig')[copyIndex('services')].name)]"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "backendOpenAI"
+              ]
+            },
+            {
+              "type": "Microsoft.ApiManagement/service/subscriptions",
+              "apiVersion": "2021-12-01-preview",
+              "name": "[format('{0}/{1}', parameters('apiManagementName'), parameters('openAISubscriptionName'))]",
+              "properties": {
+                "allowTracing": true,
+                "displayName": "[parameters('openAISubscriptionDescription')]",
+                "scope": "[format('/apis/{0}', resourceId('Microsoft.ApiManagement/service/apis', parameters('apiManagementName'), parameters('openAIAPIName')))]",
+                "state": "active"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apiManagementName'), parameters('openAIAPIName'))]"
+              ]
+            },
+            {
+              "condition": "[and(not(empty(parameters('appInsightsId'))), not(empty(parameters('appInsightsInstrumentationKey'))))]",
+              "type": "Microsoft.ApiManagement/service/apis/diagnostics",
+              "apiVersion": "2022-08-01",
+              "name": "[format('{0}/{1}/{2}', parameters('apiManagementName'), parameters('openAIAPIName'), 'applicationinsights')]",
+              "properties": {
+                "alwaysLog": "allErrors",
+                "httpCorrelationProtocol": "W3C",
+                "logClientIp": true,
+                "loggerId": "[resourceId(resourceGroup().name, 'Microsoft.ApiManagement/service/loggers', parameters('apiManagementName'), parameters('apimLoggerName'))]",
+                "metrics": true,
+                "verbosity": "verbose",
+                "sampling": {
+                  "samplingType": "fixed",
+                  "percentage": 100
+                },
+                "frontend": {
+                  "request": "[variables('logSettings')]",
+                  "response": "[variables('logSettings')]"
+                },
+                "backend": {
+                  "request": "[variables('logSettings')]",
+                  "response": "[variables('logSettings')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apiManagementName'), parameters('openAIAPIName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "subscriptionPrimaryKey": {
+              "type": "string",
+              "value": "[listSecrets(resourceId('Microsoft.ApiManagement/service/subscriptions', parameters('apiManagementName'), parameters('openAISubscriptionName')), '2021-12-01-preview').primaryKey]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'appInsightsModule')]",
+        "[resourceId('Microsoft.Resources/deployments', 'openAIModule')]"
+      ]
+    }
+  ],
+  "outputs": {
+    "applicationInsightsAppId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule')).outputs.appId.value]"
+    },
+    "applicationInsightsName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule')).outputs.applicationInsightsName.value]"
+    },
+    "logAnalyticsWorkspaceId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'lawModule')).outputs.customerId.value]"
+    },
+    "apimServiceId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'apimModule')).outputs.id.value]"
+    },
+    "apimResourceGatewayURL": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'apimModule')).outputs.gatewayUrl.value]"
+    },
+    "apimSubscription1Key": {
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.ApiManagement/service/subscriptions', variables('apiManagementName'), format('{0}{1}', variables('openAISubscriptionName'), range(1, 3)[0])), '2021-12-01-preview').primaryKey]"
+    },
+    "apimSubscription2Key": {
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.ApiManagement/service/subscriptions', variables('apiManagementName'), format('{0}{1}', variables('openAISubscriptionName'), range(1, 3)[1])), '2021-12-01-preview').primaryKey]"
+    },
+    "apimSubscription3Key": {
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.ApiManagement/service/subscriptions', variables('apiManagementName'), format('{0}{1}', variables('openAISubscriptionName'), range(1, 3)[2])), '2021-12-01-preview').primaryKey]"
+    }
+  }
+}

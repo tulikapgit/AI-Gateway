@@ -69,7 +69,7 @@ param apimUserAssignedManagedIdentityId string = ''
 // ------------------
 
 // https://learn.microsoft.com/azure/templates/microsoft.apimanagement/service
-resource apimService 'Microsoft.ApiManagement/service@2024-06-01-preview' = {
+resource apimService 'Microsoft.ApiManagement/service@2024-05-01' = {
   name: apiManagementName
   location: location
   sku: {
@@ -90,7 +90,7 @@ resource apimService 'Microsoft.ApiManagement/service@2024-06-01-preview' = {
 }
 
 // Create a logger only if we have an App Insights ID and instrumentation key.
-resource apimLogger 'Microsoft.ApiManagement/service/loggers@2021-12-01-preview' = if (!empty(appInsightsId) && !empty(appInsightsInstrumentationKey)) {
+resource apimLogger 'Microsoft.ApiManagement/service/loggers@2024-05-01' = if (!empty(appInsightsId) && !empty(appInsightsInstrumentationKey)) {
   name: apimLoggerName
   parent: apimService
   properties: {

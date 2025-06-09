@@ -73,12 +73,12 @@ var logSettings = {
 //    RESOURCES
 // ------------------
 
-resource apimService 'Microsoft.ApiManagement/service@2024-06-01-preview' existing = {
+resource apimService 'Microsoft.ApiManagement/service@2023-05-01' existing = {
   name: apiManagementName
 }
 
 // https://learn.microsoft.com/azure/templates/microsoft.apimanagement/service/apis
-resource api 'Microsoft.ApiManagement/service/apis@2024-06-01-preview' = {
+resource api 'Microsoft.ApiManagement/service/apis@2023-05-01' = {
   name: openAIAPIName
   parent: apimService
   properties: {
@@ -101,7 +101,7 @@ resource api 'Microsoft.ApiManagement/service/apis@2024-06-01-preview' = {
 }
 
 // https://learn.microsoft.com/azure/templates/microsoft.apimanagement/service/apis/policies
-resource apiPolicy 'Microsoft.ApiManagement/service/apis/policies@2024-06-01-preview' = {
+resource apiPolicy 'Microsoft.ApiManagement/service/apis/policies@2022-08-01' = {
   name: 'policy'
   parent: api
   properties: {
@@ -111,7 +111,7 @@ resource apiPolicy 'Microsoft.ApiManagement/service/apis/policies@2024-06-01-pre
 }
 
 // https://learn.microsoft.com/azure/templates/microsoft.apimanagement/service/backends
-resource backendOpenAI 'Microsoft.ApiManagement/service/backends@2024-06-01-preview' =  [for (config, i) in openAIConfig: if(length(openAIConfig) > 0) {
+resource backendOpenAI 'Microsoft.ApiManagement/service/backends@2022-08-01' =  [for (config, i) in openAIConfig: if(length(openAIConfig) > 0) {
   name: config.name
   parent: apimService
   properties: {
@@ -144,7 +144,7 @@ resource backendOpenAI 'Microsoft.ApiManagement/service/backends@2024-06-01-prev
 }]
 
 // https://learn.microsoft.com/azure/templates/microsoft.apimanagement/service/backends
-resource backendPoolOpenAI 'Microsoft.ApiManagement/service/backends@2024-06-01-preview' = if(length(openAIConfig) > 1) {
+resource backendPoolOpenAI 'Microsoft.ApiManagement/service/backends@2021-12-01-preview' = if(length(openAIConfig) > 1) {
   name: openAIBackendPoolName
   parent: apimService
   // BCP035: protocol and url are not needed in the Pool type. This is an incorrect error.
@@ -155,14 +155,12 @@ resource backendPoolOpenAI 'Microsoft.ApiManagement/service/backends@2024-06-01-
     pool: {
       services: [for (config, i) in openAIConfig: {
         id: '/backends/${backendOpenAI[i].name}'
-        priority: config.?priority
-        weight: config.?weight
       }]
     }
   }
 }
 
-resource apimSubscription 'Microsoft.ApiManagement/service/subscriptions@2024-06-01-preview' = {
+resource apimSubscription 'Microsoft.ApiManagement/service/subscriptions@2021-12-01-preview' = {
   name: openAISubscriptionName
   parent: apimService
   properties: {
